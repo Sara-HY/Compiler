@@ -1,0 +1,1804 @@
+State 109 conflicts: 15 shift/reduce
+
+
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: ExtDefList
+
+    2 ExtDefList: /* empty */
+    3           | ExtDef ExtDefList
+
+    4 ExtDef: Specifier ExtDecList ';'
+    5       | Specifier ';'
+    6       | Specifier FunDec ';'
+    7       | Specifier FunDec CompSt
+
+    8 ExtDecList: VarDec
+    9           | VarDec ',' ExtDecList
+
+   10 Specifier: TYPE
+   11          | StructSpecifier
+
+   12 TYPE: INT
+   13     | FLOAT
+
+   14 StructSpecifier: STRUCT OptTag '{' DefList '}'
+   15                | STRUCT Tag
+
+   16 OptTag: /* empty */
+   17       | ID
+
+   18 Tag: ID
+
+   19 VarDec: ID
+   20       | VarDec '[' INT_NUM ']'
+
+   21 FunDec: ID '(' VarList ')'
+   22       | ID '(' ')'
+
+   23 VarList: ParamDec ',' VarList
+   24        | ParamDec
+
+   25 ParamDec: Specifier VarDec
+
+   26 CompSt: '{' DefList StmtList '}'
+
+   27 StmtList: /* empty */
+   28         | Stmt StmtList
+
+   29 Stmt: Exp ';'
+   30     | CompSt
+   31     | RETURN Exp ';'
+   32     | IF '(' Exp ')' Stmt
+   33     | IF '(' Exp ')' Stmt ELSE Stmt
+   34     | WHILE '(' Exp ')' Stmt
+
+   35 DefList: /* empty */
+   36        | Def DefList
+
+   37 Def: Specifier DecList ';'
+
+   38 DecList: Dec
+   39        | Dec ',' DecList
+
+   40 Dec: VarDec
+   41    | VarDec '=' Exp
+
+   42 Exp: Exp '=' Exp
+   43    | Exp And Exp
+   44    | Exp Or Exp
+   45    | Exp Relop Exp
+   46    | Exp '+' Exp
+   47    | Exp '-' Exp
+   48    | Exp '*' Exp
+   49    | Exp '/' Exp
+   50    | '(' Exp ')'
+   51    | '-' Exp
+   52    | '!' Exp
+   53    | ID '(' Args ')'
+   54    | ID '(' ')'
+   55    | Exp '[' Exp ']'
+   56    | Exp '.' ID
+   57    | ID
+   58    | INT_NUM
+   59    | FLOAT_NUM
+
+   60 Relop: Equal
+   61      | Unequal
+   62      | '<'
+   63      | LE
+   64      | '>'
+   65      | GE
+
+   66 Args: Exp ',' Args
+   67     | Exp
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+'!' (33) 52
+'(' (40) 21 22 32 33 34 50 53 54
+')' (41) 21 22 32 33 34 50 53 54
+'*' (42) 48
+'+' (43) 46
+',' (44) 9 23 39 66
+'-' (45) 47 51
+'.' (46) 56
+'/' (47) 49
+';' (59) 4 5 6 29 31 37
+'<' (60) 62
+'=' (61) 41 42
+'>' (62) 64
+'[' (91) 20 55
+']' (93) 20 55
+'{' (123) 14 26
+'}' (125) 14 26
+error (256)
+INT_NUM (258) 20 58
+FLOAT_NUM (259) 59
+ID (260) 17 18 19 21 22 53 54 56 57
+INT (261) 12
+FLOAT (262) 13
+STRUCT (263) 14 15
+RETURN (264) 31
+IF (265) 32 33
+ELSE (266) 33
+WHILE (267) 34
+GE (268) 65
+LE (269) 63
+Equal (270) 60
+Unequal (271) 61
+And (272) 43
+Or (273) 44
+UMINUS (274)
+LOWER_THAN_ELSE (275)
+
+
+Nonterminals, with rules where they appear
+
+$accept (38)
+    on left: 0
+Program (39)
+    on left: 1, on right: 0
+ExtDefList (40)
+    on left: 2 3, on right: 1 3
+ExtDef (41)
+    on left: 4 5 6 7, on right: 3
+ExtDecList (42)
+    on left: 8 9, on right: 4 9
+Specifier (43)
+    on left: 10 11, on right: 4 5 6 7 25 37
+TYPE (44)
+    on left: 12 13, on right: 10
+StructSpecifier (45)
+    on left: 14 15, on right: 11
+OptTag (46)
+    on left: 16 17, on right: 14
+Tag (47)
+    on left: 18, on right: 15
+VarDec (48)
+    on left: 19 20, on right: 8 9 20 25 40 41
+FunDec (49)
+    on left: 21 22, on right: 6 7
+VarList (50)
+    on left: 23 24, on right: 21 23
+ParamDec (51)
+    on left: 25, on right: 23 24
+CompSt (52)
+    on left: 26, on right: 7 30
+StmtList (53)
+    on left: 27 28, on right: 26 28
+Stmt (54)
+    on left: 29 30 31 32 33 34, on right: 28 32 33 34
+DefList (55)
+    on left: 35 36, on right: 14 26 36
+Def (56)
+    on left: 37, on right: 36
+DecList (57)
+    on left: 38 39, on right: 37 39
+Dec (58)
+    on left: 40 41, on right: 38 39
+Exp (59)
+    on left: 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59,
+    on right: 29 31 32 33 34 41 42 43 44 45 46 47 48 49 50 51 52 55
+    56 66 67
+Relop (60)
+    on left: 60 61 62 63 64 65, on right: 45
+Args (61)
+    on left: 66 67, on right: 53 66
+
+
+state 0
+
+    0 $accept: . Program $end
+
+    INT     shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    STRUCT  shift, and go to state 3
+
+    $default  reduce using rule 2 (ExtDefList)
+
+    Program          go to state 4
+    ExtDefList       go to state 5
+    ExtDef           go to state 6
+    Specifier        go to state 7
+    TYPE             go to state 8
+    StructSpecifier  go to state 9
+
+
+state 1
+
+   12 TYPE: INT .
+
+    $default  reduce using rule 12 (TYPE)
+
+
+state 2
+
+   13 TYPE: FLOAT .
+
+    $default  reduce using rule 13 (TYPE)
+
+
+state 3
+
+   14 StructSpecifier: STRUCT . OptTag '{' DefList '}'
+   15                | STRUCT . Tag
+
+    ID  shift, and go to state 10
+
+    $default  reduce using rule 16 (OptTag)
+
+    OptTag  go to state 11
+    Tag     go to state 12
+
+
+state 4
+
+    0 $accept: Program . $end
+
+    $end  shift, and go to state 13
+
+
+state 5
+
+    1 Program: ExtDefList .
+
+    $default  reduce using rule 1 (Program)
+
+
+state 6
+
+    3 ExtDefList: ExtDef . ExtDefList
+
+    INT     shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    STRUCT  shift, and go to state 3
+
+    $default  reduce using rule 2 (ExtDefList)
+
+    ExtDefList       go to state 14
+    ExtDef           go to state 6
+    Specifier        go to state 7
+    TYPE             go to state 8
+    StructSpecifier  go to state 9
+
+
+state 7
+
+    4 ExtDef: Specifier . ExtDecList ';'
+    5       | Specifier . ';'
+    6       | Specifier . FunDec ';'
+    7       | Specifier . FunDec CompSt
+
+    ID   shift, and go to state 15
+    ';'  shift, and go to state 16
+
+    ExtDecList  go to state 17
+    VarDec      go to state 18
+    FunDec      go to state 19
+
+
+state 8
+
+   10 Specifier: TYPE .
+
+    $default  reduce using rule 10 (Specifier)
+
+
+state 9
+
+   11 Specifier: StructSpecifier .
+
+    $default  reduce using rule 11 (Specifier)
+
+
+state 10
+
+   17 OptTag: ID .
+   18 Tag: ID .
+
+    '{'       reduce using rule 17 (OptTag)
+    $default  reduce using rule 18 (Tag)
+
+
+state 11
+
+   14 StructSpecifier: STRUCT OptTag . '{' DefList '}'
+
+    '{'  shift, and go to state 20
+
+
+state 12
+
+   15 StructSpecifier: STRUCT Tag .
+
+    $default  reduce using rule 15 (StructSpecifier)
+
+
+state 13
+
+    0 $accept: Program $end .
+
+    $default  accept
+
+
+state 14
+
+    3 ExtDefList: ExtDef ExtDefList .
+
+    $default  reduce using rule 3 (ExtDefList)
+
+
+state 15
+
+   19 VarDec: ID .
+   21 FunDec: ID . '(' VarList ')'
+   22       | ID . '(' ')'
+
+    '('  shift, and go to state 21
+
+    $default  reduce using rule 19 (VarDec)
+
+
+state 16
+
+    5 ExtDef: Specifier ';' .
+
+    $default  reduce using rule 5 (ExtDef)
+
+
+state 17
+
+    4 ExtDef: Specifier ExtDecList . ';'
+
+    ';'  shift, and go to state 22
+
+
+state 18
+
+    8 ExtDecList: VarDec .
+    9           | VarDec . ',' ExtDecList
+   20 VarDec: VarDec . '[' INT_NUM ']'
+
+    '['  shift, and go to state 23
+    ','  shift, and go to state 24
+
+    $default  reduce using rule 8 (ExtDecList)
+
+
+state 19
+
+    6 ExtDef: Specifier FunDec . ';'
+    7       | Specifier FunDec . CompSt
+
+    ';'  shift, and go to state 25
+    '{'  shift, and go to state 26
+
+    CompSt  go to state 27
+
+
+state 20
+
+   14 StructSpecifier: STRUCT OptTag '{' . DefList '}'
+
+    INT     shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    STRUCT  shift, and go to state 3
+
+    $default  reduce using rule 35 (DefList)
+
+    Specifier        go to state 28
+    TYPE             go to state 8
+    StructSpecifier  go to state 9
+    DefList          go to state 29
+    Def              go to state 30
+
+
+state 21
+
+   21 FunDec: ID '(' . VarList ')'
+   22       | ID '(' . ')'
+
+    INT     shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    STRUCT  shift, and go to state 3
+    ')'     shift, and go to state 31
+
+    Specifier        go to state 32
+    TYPE             go to state 8
+    StructSpecifier  go to state 9
+    VarList          go to state 33
+    ParamDec         go to state 34
+
+
+state 22
+
+    4 ExtDef: Specifier ExtDecList ';' .
+
+    $default  reduce using rule 4 (ExtDef)
+
+
+state 23
+
+   20 VarDec: VarDec '[' . INT_NUM ']'
+
+    INT_NUM  shift, and go to state 35
+
+
+state 24
+
+    9 ExtDecList: VarDec ',' . ExtDecList
+
+    ID  shift, and go to state 36
+
+    ExtDecList  go to state 37
+    VarDec      go to state 18
+
+
+state 25
+
+    6 ExtDef: Specifier FunDec ';' .
+
+    $default  reduce using rule 6 (ExtDef)
+
+
+state 26
+
+   26 CompSt: '{' . DefList StmtList '}'
+
+    INT     shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    STRUCT  shift, and go to state 3
+
+    $default  reduce using rule 35 (DefList)
+
+    Specifier        go to state 28
+    TYPE             go to state 8
+    StructSpecifier  go to state 9
+    DefList          go to state 38
+    Def              go to state 30
+
+
+state 27
+
+    7 ExtDef: Specifier FunDec CompSt .
+
+    $default  reduce using rule 7 (ExtDef)
+
+
+state 28
+
+   37 Def: Specifier . DecList ';'
+
+    ID  shift, and go to state 36
+
+    VarDec   go to state 39
+    DecList  go to state 40
+    Dec      go to state 41
+
+
+state 29
+
+   14 StructSpecifier: STRUCT OptTag '{' DefList . '}'
+
+    '}'  shift, and go to state 42
+
+
+state 30
+
+   36 DefList: Def . DefList
+
+    INT     shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    STRUCT  shift, and go to state 3
+
+    $default  reduce using rule 35 (DefList)
+
+    Specifier        go to state 28
+    TYPE             go to state 8
+    StructSpecifier  go to state 9
+    DefList          go to state 43
+    Def              go to state 30
+
+
+state 31
+
+   22 FunDec: ID '(' ')' .
+
+    $default  reduce using rule 22 (FunDec)
+
+
+state 32
+
+   25 ParamDec: Specifier . VarDec
+
+    ID  shift, and go to state 36
+
+    VarDec  go to state 44
+
+
+state 33
+
+   21 FunDec: ID '(' VarList . ')'
+
+    ')'  shift, and go to state 45
+
+
+state 34
+
+   23 VarList: ParamDec . ',' VarList
+   24        | ParamDec .
+
+    ','  shift, and go to state 46
+
+    $default  reduce using rule 24 (VarList)
+
+
+state 35
+
+   20 VarDec: VarDec '[' INT_NUM . ']'
+
+    ']'  shift, and go to state 47
+
+
+state 36
+
+   19 VarDec: ID .
+
+    $default  reduce using rule 19 (VarDec)
+
+
+state 37
+
+    9 ExtDecList: VarDec ',' ExtDecList .
+
+    $default  reduce using rule 9 (ExtDecList)
+
+
+state 38
+
+   26 CompSt: '{' DefList . StmtList '}'
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    RETURN     shift, and go to state 51
+    IF         shift, and go to state 52
+    WHILE      shift, and go to state 53
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+    '{'        shift, and go to state 26
+
+    $default  reduce using rule 27 (StmtList)
+
+    CompSt    go to state 57
+    StmtList  go to state 58
+    Stmt      go to state 59
+    Exp       go to state 60
+
+
+state 39
+
+   20 VarDec: VarDec . '[' INT_NUM ']'
+   40 Dec: VarDec .
+   41    | VarDec . '=' Exp
+
+    '='  shift, and go to state 61
+    '['  shift, and go to state 23
+
+    $default  reduce using rule 40 (Dec)
+
+
+state 40
+
+   37 Def: Specifier DecList . ';'
+
+    ';'  shift, and go to state 62
+
+
+state 41
+
+   38 DecList: Dec .
+   39        | Dec . ',' DecList
+
+    ','  shift, and go to state 63
+
+    $default  reduce using rule 38 (DecList)
+
+
+state 42
+
+   14 StructSpecifier: STRUCT OptTag '{' DefList '}' .
+
+    $default  reduce using rule 14 (StructSpecifier)
+
+
+state 43
+
+   36 DefList: Def DefList .
+
+    $default  reduce using rule 36 (DefList)
+
+
+state 44
+
+   20 VarDec: VarDec . '[' INT_NUM ']'
+   25 ParamDec: Specifier VarDec .
+
+    '['  shift, and go to state 23
+
+    $default  reduce using rule 25 (ParamDec)
+
+
+state 45
+
+   21 FunDec: ID '(' VarList ')' .
+
+    $default  reduce using rule 21 (FunDec)
+
+
+state 46
+
+   23 VarList: ParamDec ',' . VarList
+
+    INT     shift, and go to state 1
+    FLOAT   shift, and go to state 2
+    STRUCT  shift, and go to state 3
+
+    Specifier        go to state 32
+    TYPE             go to state 8
+    StructSpecifier  go to state 9
+    VarList          go to state 64
+    ParamDec         go to state 34
+
+
+state 47
+
+   20 VarDec: VarDec '[' INT_NUM ']' .
+
+    $default  reduce using rule 20 (VarDec)
+
+
+state 48
+
+   58 Exp: INT_NUM .
+
+    $default  reduce using rule 58 (Exp)
+
+
+state 49
+
+   59 Exp: FLOAT_NUM .
+
+    $default  reduce using rule 59 (Exp)
+
+
+state 50
+
+   53 Exp: ID . '(' Args ')'
+   54    | ID . '(' ')'
+   57    | ID .
+
+    '('  shift, and go to state 65
+
+    $default  reduce using rule 57 (Exp)
+
+
+state 51
+
+   31 Stmt: RETURN . Exp ';'
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 66
+
+
+state 52
+
+   32 Stmt: IF . '(' Exp ')' Stmt
+   33     | IF . '(' Exp ')' Stmt ELSE Stmt
+
+    '('  shift, and go to state 67
+
+
+state 53
+
+   34 Stmt: WHILE . '(' Exp ')' Stmt
+
+    '('  shift, and go to state 68
+
+
+state 54
+
+   51 Exp: '-' . Exp
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 69
+
+
+state 55
+
+   52 Exp: '!' . Exp
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 70
+
+
+state 56
+
+   50 Exp: '(' . Exp ')'
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 71
+
+
+state 57
+
+   30 Stmt: CompSt .
+
+    $default  reduce using rule 30 (Stmt)
+
+
+state 58
+
+   26 CompSt: '{' DefList StmtList . '}'
+
+    '}'  shift, and go to state 72
+
+
+state 59
+
+   28 StmtList: Stmt . StmtList
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    RETURN     shift, and go to state 51
+    IF         shift, and go to state 52
+    WHILE      shift, and go to state 53
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+    '{'        shift, and go to state 26
+
+    $default  reduce using rule 27 (StmtList)
+
+    CompSt    go to state 57
+    StmtList  go to state 73
+    Stmt      go to state 59
+    Exp       go to state 60
+
+
+state 60
+
+   29 Stmt: Exp . ';'
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    And      shift, and go to state 78
+    Or       shift, and go to state 79
+    '='      shift, and go to state 80
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    '['      shift, and go to state 87
+    '.'      shift, and go to state 88
+    ';'      shift, and go to state 89
+
+    Relop  go to state 90
+
+
+state 61
+
+   41 Dec: VarDec '=' . Exp
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 91
+
+
+state 62
+
+   37 Def: Specifier DecList ';' .
+
+    $default  reduce using rule 37 (Def)
+
+
+state 63
+
+   39 DecList: Dec ',' . DecList
+
+    ID  shift, and go to state 36
+
+    VarDec   go to state 39
+    DecList  go to state 92
+    Dec      go to state 41
+
+
+state 64
+
+   23 VarList: ParamDec ',' VarList .
+
+    $default  reduce using rule 23 (VarList)
+
+
+state 65
+
+   53 Exp: ID '(' . Args ')'
+   54    | ID '(' . ')'
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+    ')'        shift, and go to state 93
+
+    Exp   go to state 94
+    Args  go to state 95
+
+
+state 66
+
+   31 Stmt: RETURN Exp . ';'
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    And      shift, and go to state 78
+    Or       shift, and go to state 79
+    '='      shift, and go to state 80
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    '['      shift, and go to state 87
+    '.'      shift, and go to state 88
+    ';'      shift, and go to state 96
+
+    Relop  go to state 90
+
+
+state 67
+
+   32 Stmt: IF '(' . Exp ')' Stmt
+   33     | IF '(' . Exp ')' Stmt ELSE Stmt
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 97
+
+
+state 68
+
+   34 Stmt: WHILE '(' . Exp ')' Stmt
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 98
+
+
+state 69
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   51    | '-' Exp .
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    '['  shift, and go to state 87
+    '.'  shift, and go to state 88
+
+    $default  reduce using rule 51 (Exp)
+
+    Relop  go to state 90
+
+
+state 70
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   52    | '!' Exp .
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    '['  shift, and go to state 87
+    '.'  shift, and go to state 88
+
+    $default  reduce using rule 52 (Exp)
+
+    Relop  go to state 90
+
+
+state 71
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   50    | '(' Exp . ')'
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    And      shift, and go to state 78
+    Or       shift, and go to state 79
+    '='      shift, and go to state 80
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    ')'      shift, and go to state 99
+    '['      shift, and go to state 87
+    '.'      shift, and go to state 88
+
+    Relop  go to state 90
+
+
+state 72
+
+   26 CompSt: '{' DefList StmtList '}' .
+
+    $default  reduce using rule 26 (CompSt)
+
+
+state 73
+
+   28 StmtList: Stmt StmtList .
+
+    $default  reduce using rule 28 (StmtList)
+
+
+state 74
+
+   65 Relop: GE .
+
+    $default  reduce using rule 65 (Relop)
+
+
+state 75
+
+   63 Relop: LE .
+
+    $default  reduce using rule 63 (Relop)
+
+
+state 76
+
+   60 Relop: Equal .
+
+    $default  reduce using rule 60 (Relop)
+
+
+state 77
+
+   61 Relop: Unequal .
+
+    $default  reduce using rule 61 (Relop)
+
+
+state 78
+
+   43 Exp: Exp And . Exp
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 100
+
+
+state 79
+
+   44 Exp: Exp Or . Exp
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 101
+
+
+state 80
+
+   42 Exp: Exp '=' . Exp
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 102
+
+
+state 81
+
+   64 Relop: '>' .
+
+    $default  reduce using rule 64 (Relop)
+
+
+state 82
+
+   62 Relop: '<' .
+
+    $default  reduce using rule 62 (Relop)
+
+
+state 83
+
+   46 Exp: Exp '+' . Exp
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 103
+
+
+state 84
+
+   47 Exp: Exp '-' . Exp
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 104
+
+
+state 85
+
+   48 Exp: Exp '*' . Exp
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 105
+
+
+state 86
+
+   49 Exp: Exp '/' . Exp
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 106
+
+
+state 87
+
+   55 Exp: Exp '[' . Exp ']'
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 107
+
+
+state 88
+
+   56 Exp: Exp '.' . ID
+
+    ID  shift, and go to state 108
+
+
+state 89
+
+   29 Stmt: Exp ';' .
+
+    $default  reduce using rule 29 (Stmt)
+
+
+state 90
+
+   45 Exp: Exp Relop . Exp
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp  go to state 109
+
+
+state 91
+
+   41 Dec: VarDec '=' Exp .
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    And      shift, and go to state 78
+    Or       shift, and go to state 79
+    '='      shift, and go to state 80
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    '['      shift, and go to state 87
+    '.'      shift, and go to state 88
+
+    $default  reduce using rule 41 (Dec)
+
+    Relop  go to state 90
+
+
+state 92
+
+   39 DecList: Dec ',' DecList .
+
+    $default  reduce using rule 39 (DecList)
+
+
+state 93
+
+   54 Exp: ID '(' ')' .
+
+    $default  reduce using rule 54 (Exp)
+
+
+state 94
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+   66 Args: Exp . ',' Args
+   67     | Exp .
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    And      shift, and go to state 78
+    Or       shift, and go to state 79
+    '='      shift, and go to state 80
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    '['      shift, and go to state 87
+    '.'      shift, and go to state 88
+    ','      shift, and go to state 110
+
+    $default  reduce using rule 67 (Args)
+
+    Relop  go to state 90
+
+
+state 95
+
+   53 Exp: ID '(' Args . ')'
+
+    ')'  shift, and go to state 111
+
+
+state 96
+
+   31 Stmt: RETURN Exp ';' .
+
+    $default  reduce using rule 31 (Stmt)
+
+
+state 97
+
+   32 Stmt: IF '(' Exp . ')' Stmt
+   33     | IF '(' Exp . ')' Stmt ELSE Stmt
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    And      shift, and go to state 78
+    Or       shift, and go to state 79
+    '='      shift, and go to state 80
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    ')'      shift, and go to state 112
+    '['      shift, and go to state 87
+    '.'      shift, and go to state 88
+
+    Relop  go to state 90
+
+
+state 98
+
+   34 Stmt: WHILE '(' Exp . ')' Stmt
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    And      shift, and go to state 78
+    Or       shift, and go to state 79
+    '='      shift, and go to state 80
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    ')'      shift, and go to state 113
+    '['      shift, and go to state 87
+    '.'      shift, and go to state 88
+
+    Relop  go to state 90
+
+
+state 99
+
+   50 Exp: '(' Exp ')' .
+
+    $default  reduce using rule 50 (Exp)
+
+
+state 100
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   43    | Exp And Exp .
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    '['      shift, and go to state 87
+    '.'      shift, and go to state 88
+
+    $default  reduce using rule 43 (Exp)
+
+    Relop  go to state 90
+
+
+state 101
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   44    | Exp Or Exp .
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    And      shift, and go to state 78
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    '['      shift, and go to state 87
+    '.'      shift, and go to state 88
+
+    $default  reduce using rule 44 (Exp)
+
+    Relop  go to state 90
+
+
+state 102
+
+   42 Exp: Exp . '=' Exp
+   42    | Exp '=' Exp .
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    And      shift, and go to state 78
+    Or       shift, and go to state 79
+    '='      shift, and go to state 80
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    '['      shift, and go to state 87
+    '.'      shift, and go to state 88
+
+    $default  reduce using rule 42 (Exp)
+
+    Relop  go to state 90
+
+
+state 103
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   46    | Exp '+' Exp .
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    '*'  shift, and go to state 85
+    '/'  shift, and go to state 86
+    '['  shift, and go to state 87
+    '.'  shift, and go to state 88
+
+    $default  reduce using rule 46 (Exp)
+
+    Relop  go to state 90
+
+
+state 104
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   47    | Exp '-' Exp .
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    '*'  shift, and go to state 85
+    '/'  shift, and go to state 86
+    '['  shift, and go to state 87
+    '.'  shift, and go to state 88
+
+    $default  reduce using rule 47 (Exp)
+
+    Relop  go to state 90
+
+
+state 105
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   48    | Exp '*' Exp .
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    '['  shift, and go to state 87
+    '.'  shift, and go to state 88
+
+    $default  reduce using rule 48 (Exp)
+
+    Relop  go to state 90
+
+
+state 106
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   49    | Exp '/' Exp .
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    '['  shift, and go to state 87
+    '.'  shift, and go to state 88
+
+    $default  reduce using rule 49 (Exp)
+
+    Relop  go to state 90
+
+
+state 107
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   55    | Exp '[' Exp . ']'
+   56    | Exp . '.' ID
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    And      shift, and go to state 78
+    Or       shift, and go to state 79
+    '='      shift, and go to state 80
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    '['      shift, and go to state 87
+    ']'      shift, and go to state 114
+    '.'      shift, and go to state 88
+
+    Relop  go to state 90
+
+
+state 108
+
+   56 Exp: Exp '.' ID .
+
+    $default  reduce using rule 56 (Exp)
+
+
+state 109
+
+   42 Exp: Exp . '=' Exp
+   43    | Exp . And Exp
+   44    | Exp . Or Exp
+   45    | Exp . Relop Exp
+   45    | Exp Relop Exp .
+   46    | Exp . '+' Exp
+   47    | Exp . '-' Exp
+   48    | Exp . '*' Exp
+   49    | Exp . '/' Exp
+   55    | Exp . '[' Exp ']'
+   56    | Exp . '.' ID
+
+    GE       shift, and go to state 74
+    LE       shift, and go to state 75
+    Equal    shift, and go to state 76
+    Unequal  shift, and go to state 77
+    And      shift, and go to state 78
+    Or       shift, and go to state 79
+    '='      shift, and go to state 80
+    '>'      shift, and go to state 81
+    '<'      shift, and go to state 82
+    '+'      shift, and go to state 83
+    '-'      shift, and go to state 84
+    '*'      shift, and go to state 85
+    '/'      shift, and go to state 86
+    '['      shift, and go to state 87
+    '.'      shift, and go to state 88
+
+    GE        [reduce using rule 45 (Exp)]
+    LE        [reduce using rule 45 (Exp)]
+    Equal     [reduce using rule 45 (Exp)]
+    Unequal   [reduce using rule 45 (Exp)]
+    And       [reduce using rule 45 (Exp)]
+    Or        [reduce using rule 45 (Exp)]
+    '='       [reduce using rule 45 (Exp)]
+    '>'       [reduce using rule 45 (Exp)]
+    '<'       [reduce using rule 45 (Exp)]
+    '+'       [reduce using rule 45 (Exp)]
+    '-'       [reduce using rule 45 (Exp)]
+    '*'       [reduce using rule 45 (Exp)]
+    '/'       [reduce using rule 45 (Exp)]
+    '['       [reduce using rule 45 (Exp)]
+    '.'       [reduce using rule 45 (Exp)]
+    $default  reduce using rule 45 (Exp)
+
+    Relop  go to state 90
+
+
+state 110
+
+   66 Args: Exp ',' . Args
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+
+    Exp   go to state 94
+    Args  go to state 115
+
+
+state 111
+
+   53 Exp: ID '(' Args ')' .
+
+    $default  reduce using rule 53 (Exp)
+
+
+state 112
+
+   32 Stmt: IF '(' Exp ')' . Stmt
+   33     | IF '(' Exp ')' . Stmt ELSE Stmt
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    RETURN     shift, and go to state 51
+    IF         shift, and go to state 52
+    WHILE      shift, and go to state 53
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+    '{'        shift, and go to state 26
+
+    CompSt  go to state 57
+    Stmt    go to state 116
+    Exp     go to state 60
+
+
+state 113
+
+   34 Stmt: WHILE '(' Exp ')' . Stmt
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    RETURN     shift, and go to state 51
+    IF         shift, and go to state 52
+    WHILE      shift, and go to state 53
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+    '{'        shift, and go to state 26
+
+    CompSt  go to state 57
+    Stmt    go to state 117
+    Exp     go to state 60
+
+
+state 114
+
+   55 Exp: Exp '[' Exp ']' .
+
+    $default  reduce using rule 55 (Exp)
+
+
+state 115
+
+   66 Args: Exp ',' Args .
+
+    $default  reduce using rule 66 (Args)
+
+
+state 116
+
+   32 Stmt: IF '(' Exp ')' Stmt .
+   33     | IF '(' Exp ')' Stmt . ELSE Stmt
+
+    ELSE  shift, and go to state 118
+
+    $default  reduce using rule 32 (Stmt)
+
+
+state 117
+
+   34 Stmt: WHILE '(' Exp ')' Stmt .
+
+    $default  reduce using rule 34 (Stmt)
+
+
+state 118
+
+   33 Stmt: IF '(' Exp ')' Stmt ELSE . Stmt
+
+    INT_NUM    shift, and go to state 48
+    FLOAT_NUM  shift, and go to state 49
+    ID         shift, and go to state 50
+    RETURN     shift, and go to state 51
+    IF         shift, and go to state 52
+    WHILE      shift, and go to state 53
+    '-'        shift, and go to state 54
+    '!'        shift, and go to state 55
+    '('        shift, and go to state 56
+    '{'        shift, and go to state 26
+
+    CompSt  go to state 57
+    Stmt    go to state 119
+    Exp     go to state 60
+
+
+state 119
+
+   33 Stmt: IF '(' Exp ')' Stmt ELSE Stmt .
+
+    $default  reduce using rule 33 (Stmt)

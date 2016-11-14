@@ -1,0 +1,91 @@
+Program
+	ExtDefList
+		ExtDef
+			Specifier
+				StructSpecifier
+					struct
+					OptTag
+						Iden: A
+					{
+					DefList
+						Def
+							Specifier
+								TYPE
+									float
+							DefList
+								Dec
+									VarDec
+										Iden: real
+								,
+								DecList
+									Dec
+										VarDec
+											Iden: image
+							;
+					}
+			;
+		ExtDefList
+			ExtDef
+				Specifier
+					TYPE
+						int
+				FunDec
+					Iden: main
+					(
+					)
+				CompSt
+					{
+					DefList
+						Def
+							Specifier
+								StructSpecifier
+									struct
+							DecList
+								Dec
+									VarDec
+										Iden: x
+							;
+						DefList
+							Def
+								Specifier
+									TYPE
+										int
+								DecList
+									Dec
+										VarDec
+											Iden: i
+										=
+										INT_NUM: 0
+								;
+							DefList
+								Def
+									Specifier
+										TYPE
+											float
+									DecList
+										Dec
+											VarDec
+												Iden: j
+											=
+											FLOAT_NUM: 1.000
+									;
+								DefList
+									Def
+										Specifier
+											TYPE
+												int
+										DecList
+											Dec
+												VarDec
+													VarDec
+														Iden: a
+													[
+													
+													]
+										;
+					StmtList
+						Stmt
+							return
+							INT_NUM: 0
+							;
+					}
