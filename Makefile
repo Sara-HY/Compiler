@@ -1,5 +1,5 @@
 complier:lex.yy.c yacc.tab.c ast.h
-	gcc -o praser lex.yy.c yacc.tab.c ast.c semantic.c
+	gcc -o complier lex.yy.c yacc.tab.c ast.c semantic.c translate.c medCode.c finCode.c 
 	@echo Make Success!
 lex.yy.c:lex.l 
 	flex lex.l

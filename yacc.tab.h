@@ -55,8 +55,9 @@
      Unequal = 271,
      And = 272,
      Or = 273,
-     UMINUS = 274,
-     LOWER_THAN_ELSE = 275
+     RELOP = 274,
+     UMINUS = 275,
+     LOWER_THAN_ELSE = 276
    };
 #endif
 
@@ -67,7 +68,7 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 24 "yacc.y"
+#line 23 "yacc.y"
 
 	int numI; /* 变量值 */
 	float numF;
@@ -77,7 +78,7 @@ typedef union YYSTYPE
 
 
 /* Line 1676 of yacc.c  */
-#line 81 "yacc.tab.h"
+#line 82 "yacc.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

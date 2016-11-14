@@ -681,8 +681,10 @@ char *yytext;
 	#include <stdio.h>
 	#include <ctype.h>
 	#include <string.h>
+	#include <stdbool.h>
 
 	#include "ast.h"
+	#include "semantic.h"
 	#include "yacc.tab.h"
 
 	struct VarDefine G_Def[MAX_DEFS];            //存储的变量数组
@@ -705,12 +707,20 @@ char *yytext;
 		"while"
 	};
 
+ 	int yycolumn = 1;
+    #define YY_USER_ACTION \
+		yylloc.first_line = yylloc.last_line = yylineno; \
+		yylloc.first_column = yycolumn; \
+		yylloc.last_column = yycolumn + yyleng - 1; \
+		yycolumn += yyleng;
+	bool error = false;
+
 	char str[MAXSTR];
 	int id_or_keyword(char *);
 #define COMMENT1 1
 #define COMMENT2 2
 
-#line 714 "lex.yy.c"
+#line 724 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -861,9 +871,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 52 "lex.l"
+#line 62 "lex.l"
 
-#line 867 "lex.yy.c"
+#line 877 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -956,220 +966,220 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 53 "lex.l"
+#line 63 "lex.l"
 {BEGIN COMMENT1;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 54 "lex.l"
-{BEGIN 0;}
+#line 64 "lex.l"
+{BEGIN 0; yycolumn=1;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 55 "lex.l"
+#line 65 "lex.l"
 {}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 57 "lex.l"
+#line 67 "lex.l"
 {BEGIN COMMENT2;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 58 "lex.l"
-{}
+#line 68 "lex.l"
+{yycolumn=1;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 59 "lex.l"
+#line 69 "lex.l"
 {BEGIN 0;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 60 "lex.l"
+#line 70 "lex.l"
 {}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 62 "lex.l"
+#line 72 "lex.l"
 {strcpy(str, yytext); yylval.numI = atoi(yytext); return INT_NUM;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 63 "lex.l"
+#line 73 "lex.l"
 {strcpy(str, yytext); yylval.numI = strtol(yytext, NULL, 16); return INT_NUM;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 64 "lex.l"
-{printf("Lexical error at line %d: Illegal hexadecimal number \'%s\'\n", yylineno, yytext); return ERRORINT16;}
+#line 74 "lex.l"
+{error = true; printf("Lexical error at line %d: Illegal hexadecimal number \"%s\".\n", yylineno, yytext); return INT_NUM;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 65 "lex.l"
+#line 75 "lex.l"
 {strcpy(str, yytext); yylval.numI = strtol(yytext, NULL, 8); return INT_NUM;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 66 "lex.l"
-{printf("Lexical error at line %d: Illegal octonary number \'%s\'\n", yylineno, yytext); return ERRORINT8;}
+#line 76 "lex.l"
+{error = true; printf("Lexical error at line %d: Illegal octonary number \"%s\".\n", yylineno, yytext); return INT_NUM;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 67 "lex.l"
+#line 77 "lex.l"
 {strcpy(str, yytext); yylval.numF = atof(yytext); return FLOAT_NUM;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 68 "lex.l"
+#line 78 "lex.l"
 {strcpy(str, yytext); yylval.numF = atof(yytext); return FLOAT_NUM;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 69 "lex.l"
-{printf("Lexical error at line %d: Illegal float number \'%s\'\n", yylineno, yytext); return ERRORFLOAT;}
+#line 79 "lex.l"
+{error = true; printf("Lexical error at line %d: Illegal float number \"%s\".\n", yylineno, yytext); return FLOAT_NUM;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 72 "lex.l"
+#line 82 "lex.l"
 {yylval.index = ';'; strcpy(G_Def[yylval.index].name, ";"); return ';';}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 73 "lex.l"
+#line 83 "lex.l"
 {yylval.index = ','; strcpy(G_Def[yylval.index].name, ","); return ',';}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 74 "lex.l"
+#line 84 "lex.l"
 {yylval.index = '='; strcpy(G_Def[yylval.index].name, "="); return '=';}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 75 "lex.l"
+#line 85 "lex.l"
 {yylval.index = '>'; strcpy(G_Def[yylval.index].name, ">"); return '>';}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 76 "lex.l"
+#line 86 "lex.l"
 {yylval.index = '<'; strcpy(G_Def[yylval.index].name, "<"); return '<';}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 77 "lex.l"
+#line 87 "lex.l"
 {yylval.index = GE; strcpy(G_Def[yylval.index].name, ">="); return GE;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 78 "lex.l"
+#line 88 "lex.l"
 {yylval.index = LE; strcpy(G_Def[yylval.index].name, "<="); return LE;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 79 "lex.l"
+#line 89 "lex.l"
 {yylval.index = Equal; strcpy(G_Def[yylval.index].name, "=="); return Equal;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 80 "lex.l"
+#line 90 "lex.l"
 {yylval.index = Unequal; strcpy(G_Def[yylval.index].name, "!="); return Unequal;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 81 "lex.l"
+#line 91 "lex.l"
 {yylval.index = '+'; strcpy(G_Def[yylval.index].name, "+"); return '+';}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 82 "lex.l"
+#line 92 "lex.l"
 {yylval.index = '-'; strcpy(G_Def[yylval.index].name, "-"); return '-';}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 83 "lex.l"
+#line 93 "lex.l"
 {yylval.index = '*'; strcpy(G_Def[yylval.index].name, "*"); return '*';}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 84 "lex.l"
+#line 94 "lex.l"
 {yylval.index = '/'; strcpy(G_Def[yylval.index].name, "/"); return '/';}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 85 "lex.l"
+#line 95 "lex.l"
 {yylval.index = And; strcpy(G_Def[yylval.index].name, "&&"); return And;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 86 "lex.l"
+#line 96 "lex.l"
 {yylval.index = Or; strcpy(G_Def[yylval.index].name, "||"); return Or;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 87 "lex.l"
+#line 97 "lex.l"
 {yylval.index = '.'; strcpy(G_Def[yylval.index].name, "."); return '.';}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 88 "lex.l"
+#line 98 "lex.l"
 {yylval.index = '!'; strcpy(G_Def[yylval.index].name, "!"); return '!';}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 89 "lex.l"
+#line 99 "lex.l"
 {yylval.index = '('; strcpy(G_Def[yylval.index].name, "("); return '(';}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 90 "lex.l"
+#line 100 "lex.l"
 {yylval.index = ')'; strcpy(G_Def[yylval.index].name, ")"); return ')';}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 91 "lex.l"
+#line 101 "lex.l"
 {yylval.index = '['; strcpy(G_Def[yylval.index].name, "["); return '[';}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 92 "lex.l"
+#line 102 "lex.l"
 {yylval.index = ']'; strcpy(G_Def[yylval.index].name, "]"); return ']';}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 93 "lex.l"
+#line 103 "lex.l"
 {yylval.index = '{'; strcpy(G_Def[yylval.index].name, "{"); return '{';}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 94 "lex.l"
+#line 104 "lex.l"
 {yylval.index = '}'; strcpy(G_Def[yylval.index].name, "}"); return '}';}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 96 "lex.l"
+#line 106 "lex.l"
 {int i; i = id_or_keyword(yytext); strcpy(str, yytext); return i;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 97 "lex.l"
-{}
+#line 107 "lex.l"
+{yycolumn=1;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 98 "lex.l"
+#line 108 "lex.l"
 {}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 99 "lex.l"
-{printf("Lexical error at line %d: Mysterious characters \'%s\'\n", yylineno, yytext);}
+#line 109 "lex.l"
+{error = true; printf("Lexical error at line %d: Mysterious characters \"%s\".\n", yylineno, yytext);}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 100 "lex.l"
+#line 110 "lex.l"
 ECHO;
 	YY_BREAK
-#line 1173 "lex.yy.c"
+#line 1183 "lex.yy.c"
 			case YY_STATE_EOF(INITIAL):
 			case YY_STATE_EOF(COMMENT1):
 			case YY_STATE_EOF(COMMENT2):
@@ -2055,7 +2065,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 100 "lex.l"
+#line 110 "lex.l"
 
 
 int id_or_keyword(char* str)

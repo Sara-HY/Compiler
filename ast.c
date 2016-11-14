@@ -9,8 +9,10 @@ Node *set_int(int value) {
     /* 分配结点空间 */
     sizeNode = sizeof(Node);
  
-    if((p = (Node *)malloc(sizeNode)) == NULL)
+    if((p = (Node *)malloc(sizeNode)) == NULL){
         yyerror("out of memory");  
+        return NULL;
+    }
     /* 复制内容 */
     p->kind = TYPE_CONST;
     p->type = TYPE_NUM;
@@ -25,8 +27,10 @@ Node *set_float(float value){
     /* 分配结点空间 */
     sizeNode = sizeof(Node);
  
-    if((p = (Node *)malloc(sizeNode)) == NULL)
+    if((p = (Node *)malloc(sizeNode)) == NULL){
         yyerror("out of memory");  
+        return NULL;
+    }
     /* 复制内容 */
     p->kind = TYPE_CONST;
     p->type = TYPE_FLOAT;
@@ -41,8 +45,10 @@ Node *set_var(int value) {
     /* 分配结点空间 */
     sizeNode = sizeof(Node);
  
-    if((p = (Node *)malloc(sizeNode)) == NULL)
+    if((p = (Node *)malloc(sizeNode)) == NULL){
         yyerror("out of memory");
+        return NULL;
+    }
     /* 复制内容 */
     p->kind = TYPE_VAR;
     p->index = value;
@@ -55,8 +61,10 @@ Node *set_terminal(int value){
     /* 分配结点空间 */
     sizeNode = sizeof(Node);
  
-    if((p = (Node *)malloc(sizeNode)) == NULL)
+    if((p = (Node *)malloc(sizeNode)) == NULL){
         yyerror("out of memory");
+        return NULL;
+    }
     /* 复制内容 */
     p->kind = TYPE_TERMINAL;
     p->index = value;
@@ -70,14 +78,20 @@ Node *set_vn(char* name, int num, ...) {
     int i;
     /* 分配结点空间 */
     sizeNode = sizeof(Node);
-    if((p = (Node *)malloc(sizeNode)) == NULL)
+    if((p = (Node *)malloc(sizeNode)) == NULL){
         yyerror("out of memory");
+        return NULL;
+    }
     /* 复制内容 */
     p->kind = TYPE_UNTREMINAL;
     strcpy(p->vn.name, name);
     p->vn.num = num;
     va_start(valist, num);
-    p->vn.node = (Node **)malloc(num * sizeof(Node *));
+    
+    if((p->vn.node = (Node **)malloc(num * sizeof(Node *))) == NULL){
+        yyerror("out of memory");
+        return NULL;
+    }
     for(i = 0; i < num; i++)
         p->vn.node[i] = va_arg(valist, Node*);
     va_end(valist);
@@ -119,9 +133,9 @@ void tabprint(FILE* target_file, int num){
 }
 
 
-int NodeExecute(Node *p, int num){
+int NodeExecute(FILE* target_file, Node *p, int num){
     int i = 0;
-
+    
     if(p == NULL)
         return 0;
     switch(p->kind){
@@ -140,7 +154,7 @@ int NodeExecute(Node *p, int num){
         case TYPE_UNTREMINAL:   tabprint(target_file, num);
                                 fprintf(target_file, "%s\n", p->vn.name);
                                 for(i=0; i<(p->vn.num); i++)
-                                    NodeExecute(p->vn.node[i], num+1);
+                                    NodeExecute(target_file, p->vn.node[i], num+1);
                                 return 0;
         default: return 0;
     }
