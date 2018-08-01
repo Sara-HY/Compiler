@@ -2,7 +2,7 @@
 
 It is a simple compiler for C--, a subset of C, including lexical analysis, syntactic analysis, semantic analysis, intermediate code generation and object code generation.
 
-The generated object code is MIPS32 Instructments, which can run on any MIPS simulators, such as *QtSPIM*.
+The generated object code is MIPS32 Instructions, which can run on any MIPS simulators, such as *QtSPIM*.
 
 * The errors which the compiler can analyze: images/errors.png.
 * The codes transfer process: images/codes.png.
