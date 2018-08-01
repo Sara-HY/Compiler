@@ -1,0 +1,20 @@
+FUNCTION func :
+PARAM n
+IF n == #1 GOTO label0
+GOTO label1
+LABEL label0 :
+RETURN #1
+GOTO label2
+LABEL label1 :
+t0 := n - #1
+ARG t0
+t1 := CALL func
+t2 := n * t1
+RETURN t2
+LABEL label2 :
+FUNCTION main :
+READ n
+ARG n
+result := CALL func
+WRITE result
+RETURN #0

@@ -1,0 +1,116 @@
+Program
+	ExtDefList
+		ExtDef
+			Specifier
+				TYPE
+					int
+			FunDec
+				Iden: func
+				(
+				VarList
+					ParamDec
+						Specifier
+							TYPE
+								int
+						VarDec
+							Iden: n
+				)
+			CompSt
+				{
+				StmtList
+					Stmt
+						if
+						(
+						Exp
+							Iden: n
+							==
+							Exp
+								INT_NUM: 1
+						)
+						Stmt
+							return
+							Exp
+								INT_NUM: 1
+							;
+						else
+						Stmt
+							return
+							Exp
+								Iden: n
+								*
+								Exp
+									Iden: func
+									(
+									Args
+										Exp
+											Iden: n
+											-
+											Exp
+												INT_NUM: 1
+									)
+							;
+				}
+		ExtDefList
+			ExtDef
+				Specifier
+					TYPE
+						int
+				FunDec
+					Iden: main
+					(
+					)
+				CompSt
+					{
+					DefList
+						Def
+							Specifier
+								TYPE
+									int
+							DefList
+								Dec
+									VarDec
+										Iden: n
+								,
+								DecList
+									Dec
+										VarDec
+											Iden: result
+							;
+					StmtList
+						Stmt
+							Exp
+								Iden: n
+								=
+								Exp
+									Iden: read
+									(
+									)
+							;
+						StmtList
+							Stmt
+								Exp
+									Iden: result
+									=
+									Exp
+										Iden: func
+										(
+										Args
+											Iden: n
+										)
+								;
+							StmtList
+								Stmt
+									Exp
+										Iden: write
+										(
+										Args
+											Iden: result
+										)
+									;
+								StmtList
+									Stmt
+										return
+										Exp
+											INT_NUM: 0
+										;
+					}
