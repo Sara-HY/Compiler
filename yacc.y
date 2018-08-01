@@ -9,10 +9,10 @@
   	extern int yylineno;
 
 	typedef union{	
-		int numI;  /* 变量值 */
+		int numI;   /* Value of Int*/
 		float numF;
-		int index;  /* 用于存放 变量数组索引 或 一元操作符值 或 多元操作符索引 */
-		Node *node; /* 结点地址 */
+		int index;  /* Index of an array, or a unary operator value or a multi-operator */
+		Node *node; 
 	}yystype;
 	#define YYSTYPE yystype
 
@@ -21,10 +21,10 @@
 %}  
 
 %union{
-	int numI; /* 变量值 */
+	int numI;   /* Value of Int*/
 	float numF;
-	int index; /* 变量数组索引 */
-	Node *node; /* 结点地址 */
+	int index;  /* Index of an array, or a unary operator value or a multi-operator */
+	Node *node; 
 };
 
 %locations
@@ -60,37 +60,37 @@ ExtDefList: {$$ = NULL;}
 	| ExtDef ExtDefList {$$ = set_vn("ExtDefList", 2, $1, $2);}
 	;
 
-ExtDef: Specifier ExtDecList ';' //变量定义:检查是否重定义Error type 3
+ExtDef: Specifier ExtDecList ';' // Variable definition: check whether to redefine. Error type 3
 		{
 			$$ = set_vn("ExtDef", 3, $1, $2, set_terminal($3));
 			addType($1->type);
 		}  
 	| Specifier ';' {$$ = set_vn("ExtDef", 2, $1, set_terminal($2));}
-	| Specifier FunDec ';'     //函数声明
+	| Specifier FunDec ';'     // Function declaration
 		{
 			$$ = set_vn("ExtDef", 3, $1, $2, set_terminal($3));
 			Func *pFunc = funcFind($2->index);
-			if(pFunc && pFunc->tag == 1){  //申明不一致
+			if(pFunc && pFunc->tag == 1){  // Inconsistent declaration
 				error = true;
 				printf("Semantic Error at Line %d: Inconsistent declaration of function \"%s\".\n", yylineno, G_Var[pFunc->nameIndex].mark);   
 			}
 			else
 				funcDeclare($1->type, $2->index, yylineno);
 		}
-	| Specifier FunDec CompSt  //函数定义:检查实际返回类型与函数类型是否匹配Error type 8
+	| Specifier FunDec CompSt  // Function definition: check if the actual return type matches the function type. Error type 8
 		{
 			$$ = set_vn("ExtDef", 3, $1, $2, $3);
 			addLevel($2->index);
 			Func* pFunc = funcFind($2->index);
 			if(pFunc){
 				if(pFunc->tag == 1){
-					if(pFunc->pnum != pNum || pFunc->type != rtype){  //申明与定义不一致
+					if(pFunc->pnum != pNum || pFunc->type != rtype){  // Declaration is inconsistent with definition
 						error = true;
 						printf("Semantic Error at Line %d: Inconsistent definition with declaration of function \"%s\".\n", yylineno, G_Var[pFunc->nameIndex].mark);
 					}
 					else{
 						pFunc->tag = 2;
-						if(pFunc->type!=0 && rtype!=0 && rtype != pFunc->type){  //实际返回类型和函数定义的返回类型比较
+						if(pFunc->type!=0 && rtype!=0 && rtype != pFunc->type){  // Compare the return type between the actual return type and the function definition
 							error = true;
                 			printf("Semantic Error at Line %d: Type mismatched for return.\n", yylineno);
 						}
@@ -152,7 +152,7 @@ TYPE: INT      {$$ = set_vn("TYPE", 1, set_terminal($1)); $$->type = TYPE_NUM;}
 	| FLOAT    {$$ = set_vn("TYPE", 1, set_terminal($1)); $$->type = TYPE_FLOAT;}
 	;
 
-StructSpecifier: STRUCT OptTag '{' DefList '}' //结构体定义:检查是否重定义Error type 16
+StructSpecifier: STRUCT OptTag '{' DefList '}' // Structure definition: check whether to redefine. Error type 16
 				{
 					$$ = set_vn("StructSpecifier", 5, set_terminal($1), $2, set_terminal($3), $4, set_terminal($5));
 					if($2 != NULL)
@@ -165,7 +165,7 @@ StructSpecifier: STRUCT OptTag '{' DefList '}' //结构体定义:检查是否重
 					else if($2 != NULL)
 						strucTable(1, $2);
 				}
-	| STRUCT Tag   //结构体引用:检查是否未定义就引用Error type 17
+	| STRUCT Tag   // Structure reference: Check if the definition is undefined and reference. Error type 17
 		{
 			$$ = set_vn("StructSpecifier", 2, set_terminal($1), $2);
 			$$->type = $2->index;
@@ -214,7 +214,7 @@ VarDec: ID
 	}
 	;
 
-FunDec: ID '(' VarList ')'  //函数定义:检查是否重复定义Error type 4
+FunDec: ID '(' VarList ')'  //Function definition: check if the definition is repeated. Error type 4
 	{
 		$$ = set_vn("FunDec", 4, set_var($1), set_terminal($2), $3, set_terminal($4));
 		$$->index = $1;
@@ -230,7 +230,7 @@ FunDec: ID '(' VarList ')'  //函数定义:检查是否重复定义Error type 4
 		error = true;
 		printf("Syntax Error at Line %d: Something wrong with VarList between ().\n", @3.last_line);
 	}
-	| ID '(' ')'  //函数定义:检查是否重复定义Error type 4
+	| ID '(' ')'  //Function definition: check if the definition is repeated. Error type 4
 	{
 		$$ = set_vn("FunDec", 3, set_var($1), set_terminal($2), set_terminal($3));
 		$$->index = $1;
@@ -349,7 +349,7 @@ DefList: {$$ = NULL;}
 	| Def DefList {$$ = set_vn("DefList", 2, $1, $2);}
 	;
 
-Def: Specifier DecList ';'  //变量或数组定义:检查变量是否重定义 Error type 3
+Def: Specifier DecList ';'  // Variable or array definition: check if the variable is redefined. Error type 3
 	{
 		$$ = set_vn("Def", 3, $1, $2, set_terminal($3));
 		addType($1->type);
@@ -409,7 +409,7 @@ Dec: VarDec
 	}
 	;
 
-Exp:  Exp '=' Exp  //检查等号左右类型匹配判断Error type 5, 操作符左右类型Error type 7
+Exp:  Exp '=' Exp  // Check the equal sign type match. Error type 5. Operator left and right type. Error type 7
 	{
 		$$ = set_vn("Exp", 3, $1, set_terminal($2), $3);
 		$$->type = $1->type;
@@ -575,7 +575,7 @@ Exp:  Exp '=' Exp  //检查等号左右类型匹配判断Error type 5, 操作符
 			printf("Semantic Error at Line %d: Only integer can use \"!\".\n", yylineno);	
 		}
 	}
-	| ID '(' Args ')'  //函数引用:检查是否未定义就调用Error type 2 
+	| ID '(' Args ')'  // Function reference: Check if Type is not defined but call. Error type 2
 	{
 		$$ = set_vn("Exp", 4, set_var($1), set_terminal($2), $3, set_terminal($4));
 		$$->index = $1;
@@ -599,7 +599,7 @@ Exp:  Exp '=' Exp  //检查等号左右类型匹配判断Error type 5, 操作符
 				$$->type = type;
 
 		}
-		rpNum = 0;   //将实参个数清0
+		rpNum = 0;   // Clear the number of arguments
 	}
 	| ID '(' ')'      
 	{
@@ -661,7 +661,7 @@ Exp:  Exp '=' Exp  //检查等号左右类型匹配判断Error type 5, 操作符
 		error = true;
 		printf("Syntax Error at Line %d: Missing \"]\".\n", @3.last_line);
 	}
-	| Exp '.' ID      //结构体引用:检查点号引用Error type 13
+	| Exp '.' ID      //Structure reference: check point number reference. Error type 13
 	{
 		$$ = set_vn("Exp", 3, $1, set_terminal($2), set_var($3));
 		$$->type = varType($3);
@@ -679,7 +679,7 @@ Exp:  Exp '=' Exp  //检查等号左右类型匹配判断Error type 5, 操作符
 			printf("Semantic Error at Line %d: Non-existent filed \"%s\".\n", yylineno, G_Var[$3].mark);
 		}
 	}	
-	| ID      //变量引用:检查是否定义Error type 1 
+	| ID      //Variable reference: check if it is defined. Error type 1 
 	{
 		$$ = set_vn("Exp", 1, set_var($1));
 		if(varFind($1) == NULL){
@@ -693,14 +693,14 @@ Exp:  Exp '=' Exp  //检查等号左右类型匹配判断Error type 5, 操作符
 			$$->index = $1;
 		}
 	}
-	| INT_NUM   //整型常数
+	| INT_NUM   // Int Constant
 	{
 		$$ = set_vn("Exp", 1, set_int($1));
 		$$->type = TYPE_NUM;
 		$$->deminsion = 0;
 		$$->numI = $1;
 	}
-	| FLOAT_NUM	//浮点型常数
+	| FLOAT_NUM	 // Float Constant
 	{
 		$$ = set_vn("Exp", 1, set_float($1));
 		$$->type = TYPE_FLOAT;
@@ -717,7 +717,7 @@ Relop: Equal  {$$ = set_terminal($1);}
 	| GE   {$$ = set_terminal($1);}
 	;
 
-Args: Exp ',' Args   //记录形参个数
+Args: Exp ',' Args   // Record the number of the parameters
 	{
 		$$ = set_vn("Args", 3, $1, set_terminal($2), $3); 
 		rpNum += 1;
@@ -729,7 +729,7 @@ Args: Exp ',' Args   //记录形参个数
 		error = true;
 		printf("Syntax Error at Line %d: Something wrong with your expression.\n", @1.last_line);
 	}
-	| Exp     //记录形参个数
+	| Exp     // Record the number of the parameters
 	{	
 		$$ = set_vn("Args", 1, $1);
 		rpNum += 1;

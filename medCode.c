@@ -1,7 +1,8 @@
 #include "medCode.h"
 #include "finCode.h"
 
-//初始化中间代码表示
+
+/* Initialize the representation of intermediate code */
 void initCode(){
 	codeHead = (InterCodes *)malloc(sizeof(InterCodes));
 	codeHead->prev = NULL;
@@ -10,7 +11,7 @@ void initCode(){
 	codeTail = codeHead;
 }
 
-//释放中间代码表示
+
 void destroyCode()
 {
 	InterCodes *pCode;
@@ -21,7 +22,7 @@ void destroyCode()
 	}
 }
 
-//生成新的label，名称放在提供好的name里面。
+
 void newLabel(char* name)
 {
 	char label[16];
@@ -32,7 +33,7 @@ void newLabel(char* name)
 	strcat(name, label);
 }
 
-//生成新的临时变量，名称放在提供好的name里面。
+
 void newTemp(char* name)
 {
 	char temp[16];
@@ -43,7 +44,7 @@ void newTemp(char* name)
 	strcat(name, temp);
 }
 
-//添加一条代码，指明这条代码的词数，然后传入各个词语，各个词语都是char*，即传入多个字符串
+
 void addCode(char* code0, char* code1, char* code2, char* code3)
 {
 	InterCodes *pCode = (InterCodes *)malloc(sizeof(InterCodes));
@@ -59,7 +60,7 @@ void addCode(char* code0, char* code1, char* code2, char* code3)
 	codeTail = pCode;
 }
 
-//将内存中的代码打印到文件中，传入新文件路径，并顺便清理内存中的代码存储
+
 void printCode(FILE *target_file1, FILE *target_file2)
 {
 	int type;

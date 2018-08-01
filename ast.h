@@ -9,40 +9,40 @@
 #include <stdbool.h>
 
 #define AST_GLOBALS 
-#define MAX_VARS 100            // 最多变量数 
-#define MAX_DEFS 100            // 最多保留字数  
-// #define MAX_BUFF_COLS 40        // 分析语句每行最多字符
-// #define MAX_BUFF_ROWS 40        // 分析语句最多行数
-// #define PARSE_DEBUG             // 是否打印调试信息的开关
+#define MAX_VARS 100               // Maximum number of Varblies
+#define MAX_DEFS 100               // Maximum number of Keywords
+// #define MAX_BUFF_COLS 40        // Maximum number of Characters every line
+// #define MAX_BUFF_ROWS 40        // Maximum number of lines
+// #define PARSE_DEBUG             // Whether to print the debugging information
 
-/*************************** 定义语法树类型 ***************************/
-/* 定义树结点的权举类型 */
+/*************************** Define the type of syntax tree  ***************************/
+/* Enumerated type of the tree node */
 typedef enum {TYPE_CONST, TYPE_VAR, TYPR_FUN, TYPE_ARRAY, TYPE_STRUCT, TYPE_TERMINAL, TYPE_UNTREMINAL} NodeEnum;
 typedef enum {TYPE_NUM = -2, TYPE_FLOAT} Type;
 
-/* 非终结符 */
+/* Nonterminal */
 typedef struct{
-	char name[32]; 	        // 非终结符名称
-	int num;  		        // 非终结符个数
-	struct NodeTag **node; 	// 非终结符地址
+	char name[32]; 	        // Name
+	int num;  		          // Number of Nonterminals 
+	struct NodeTag **node; 	
 } VN_Node;
  
 typedef struct NodeTag{
-	NodeEnum kind;         // 树结点类型
-    Type type;             // 变量类型
-  	int numI;              // 整型数
-    float numF;            // 浮点数
-  	int index; 	           // 索引 
-    int level;	           // 变量所在层数
-    int deminsion;              // 数组时不为0 一般变量为0
-  	VN_Node vn;            // 非终结符对象
+	NodeEnum kind;           // Enumerated type
+    Type type;             // Variable type
+  	int numI;              // Int
+    float numF;            // Float
+  	int index; 	           // Index
+    int level;	           // Level of the variable
+    int deminsion;         // 0 while it is not an array
+  	VN_Node vn;            // Nonterminal Struct
 }Node;
 
 struct VarIndex
 {
  	int val;
  	char mark[32];
-};  //自定义变量索引
+};
 
 struct VarDefine
 {
@@ -51,25 +51,25 @@ struct VarDefine
 };
 
 extern Node *treeHead;
-struct VarIndex G_Var[MAX_VARS]; // 变量内存数组
-extern struct VarDefine G_Def[MAX_DEFS];  // 存储的变量数组
-extern int G_iVarMaxIndex;       // 变量目前总数
-extern int G_iVarCurIndex;       // 当前操作变量索引
+struct VarIndex G_Var[MAX_VARS];          // Variable index array
+extern struct VarDefine G_Def[MAX_DEFS];  // Variable array
+extern int G_iVarMaxIndex;                // Current total number of variables
+extern int G_iVarCurIndex;                // Current variable index
 FILE *treeFile;
-extern int yylineno;             // 行号
-extern char* yytext;             // 词
+extern int yylineno;                      // Line number
+extern char* yytext;                      
 extern bool error;
-void yyerror(char *s);       // 错误处理函数
+void yyerror(char *s);                    // Refactoring the error function
 
-/*************************** 建立语法树 ***************************/
-/* 属性操作类型 */
+/*************************** Build the synax tree ***************************/
+/* Attribute type related functions */
 Node *set_vn(char* name, int num, ...);
 Node *set_var(int value);
 Node *set_int(int value);
 Node *set_float(float value);
 Node *set_terminal(int value);
 
-/* 树结点操作 */
+/* Tree node related functions */
 void NodeFree(Node *p);
 int NodeExecute(FILE* target_file, Node *p, int num);
 

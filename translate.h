@@ -31,26 +31,25 @@ static char nodeType[23][32]={
 	"Args"
 };
 
-//确定非终结符的类型
+// Determine the type of nonterminal
 int vnType(char *name);
 
 void translate(Node *pNode);
 
-/* 
- * 翻译exp，其中的option表示place的主动、被动。 
- * 0：被动：place上层仅仅提供了位置，可以没有左值。你填写任何，上层会直接使用，比如填写立即数也可以。
- * 1：主动：place是由上层给定的，确定的变量，请将你的结果放入place
- * 如果place==NULL,则本层不要生成变量返回该exp的结果。
- */
+/*
+  * Translate exp.
+  * option = 0: Passive: The upper layer of the place only provides the position, and there is no left value. If you fill in any, the upper layer will be used directly, for example, you can fill in the immediate data.
+  * option = 1: Active: The place is a variable given by the upper layer, please put your result in place.
+  * If place==NULL, then this layer does not generate a variable.
+*/
 void translateExp(Node *pNode, char *place, int option);
 
-//翻译参数列表。需要当前函数定义中的参数表，当前是第几个参数。
+// Translation parameter list
 void translateArgs(Node* pNode, int funIndex, int pnum, int count);
 
-//翻译COND，由上层提供跳转label
+// Translate conditional codes, jump according to the label from the upper layer
 void translateCond(Node* pNode, char* labelTrue, char* labelFalse);
 
-//得到这个exp的地址。
 void getLocation(Node*pNode, char* place);
 
 

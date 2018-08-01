@@ -1,13 +1,15 @@
 #include "translate.h"
 
-//当前的struct定义处，用于嵌套定义struct的访问。
+// The current struct definition
 static Struc* curStruct = NULL;
-//当前数组单元大小。
+
+// The current array size.
 static int curSize = 4;
-//当前函数参数表，用来确定某一个变量是结构体的引用还是结构体本身。
+
+// The current function parameter table
 static Func* curFun = NULL;
 
-//确定非终结符
+//Determine the type of nonterminal
 int vnType(char *name)
 {
 	for(int i=0; i<23; i++){
@@ -196,7 +198,7 @@ void translateExp(Node *pNode, char *place, int option)
 	if(place == NULL){
 		return;
 	}
-	// INT_NUM   //整型常数
+	// INT_NUM   //Int Constant
 	if(pNode->vn.num == 1 && pNode->vn.node[0]->type == TYPE_NUM){
 		// printf("%d\n", pNode->vn.node[0]->numI);
 		if(option == 0)
@@ -234,7 +236,7 @@ void translateExp(Node *pNode, char *place, int option)
 			else
 				addCode(":=", "#0", "", place);
 		}
-		//temp1 temp2均为常数
+		//temp1 temp2 are constant
 		else if(temp1[0]=='#' && temp2[0]=='#'){
 			int op1 = strtol(&temp1[1], NULL, 10);
 			int op2 = strtol(&temp2[1], NULL, 10);
@@ -302,7 +304,7 @@ void translateExp(Node *pNode, char *place, int option)
 	else if(pNode->vn.node[0]->index == '-'){
 		char temp[32];
 		translateExp(pNode->vn.node[1], temp, 0);
-		//常数
+		//Constant
 		if(temp[0] == '#'){
 			int op = strtol(&temp[1], NULL, 10);
 			if(option == 0)
@@ -349,7 +351,7 @@ void translateExp(Node *pNode, char *place, int option)
 			else
 				addCode(":=", temp, "", place);
 		}
-		//EXP2为常数
+		//EXP2 is constant
 		else if(temp2[0] == '#')
 		{
 			int op = strtol(&temp2[1], NULL, 10);
@@ -445,7 +447,7 @@ void translateCond(Node* pNode, char* labelTrue, char* labelFalse)
 		translateExp(pNode->vn.node[0], temp1, 0);
 		translateExp(pNode->vn.node[2], temp2, 0);
 
-		//temp1 temp2为常数
+		//temp1 temp2 are constant
 		if(temp1[0]=='#' && temp2[0]=='#'){
 			int op1 = strtol(&temp1[1], NULL, 10);
 			int op2 = strtol(&temp2[1], NULL, 10);
@@ -552,11 +554,11 @@ void getLocation(Node*pNode, char* place)
 
 		getLocation(pNode->vn.node[0], temp1);
 		translateExp(pNode->vn.node[2], temp2, 0);
-		// temp2为0
+		// temp2 == 0
 		if(temp2[0]=='#'&& temp2[1]=='0'){
 			strcpy(place, temp1);
 		}
-		// temp2为非0常数
+		// temp2 is constant but not 0
 		else if(temp2[0]=='#'){
 			int op = strtol(&temp2[1], NULL, 10);
 			char temp[32],offset[32];

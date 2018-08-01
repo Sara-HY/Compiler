@@ -22,7 +22,8 @@ void regAlloc(FILE *target_file, char* name, int num);
 
 void dataADDs(InterCodes* pHead, InterCodes* pTail);
 void instruction(FILE *target_file, InterCodes* pHead, InterCodes* pTail);
-//将对应的中间代码转换为相关指令
+
+/* Convert the intermediate codes to final instructions */
 void instructions(FILE *target_file, InterCodes* pHead, InterCodes* pTail);
 void finCode(FILE *target_file, InterCodes* pCode);
 

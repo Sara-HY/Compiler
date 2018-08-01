@@ -1,16 +1,15 @@
 #include "semantic.h"
 #include "ast.h"
 
-/************************ 建立符号表 ************************/ 
-/*初始化符号表*/
+/************************ Build the symbol table ************************/ 
 void initTable()
 {
-    varHead = (Var *)malloc(sizeof(Var));         //变量符号表头指针
+    varHead = (Var *)malloc(sizeof(Var));         
     varHead->next = NULL;
-    varTail = varHead;//变量符号表尾指针
+    varTail = varHead;
 
-    funcHead = (Func *)malloc(sizeof(Func));      //函数符号表头指针
-    funcHead->next = NULL;         //函数符号表尾指针
+    funcHead = (Func *)malloc(sizeof(Func));      
+    funcHead->next = NULL;      
     funcTail = funcHead;
     pNum = 1;
     add_var("write");
@@ -21,12 +20,12 @@ void initTable()
     funcDefine(-2, G_iVarCurIndex, 0);
     add_var("read_param");
 
-    strucHead = (Struc *)malloc(sizeof(Struc));//结构体符号表头指针
+    strucHead = (Struc *)malloc(sizeof(Struc));
     strucHead->next = NULL;
-    strucTail = strucHead;             //结构体符号表尾指针
+    strucTail = strucHead;             
 }
 
-/*删除符号表*/
+
 void destroyTable()
 {
     Var* pVar;
@@ -50,8 +49,7 @@ void destroyTable()
 }
 
 
-/*=================创建、查询变量符号表==============*/
-/*建立变量符号表*/
+/*=================Variable symbol table==============*/
 void varTable(int index, int deminsion, int *size)
 {
 	Var *pVar = (Var *)malloc(sizeof(Var));
@@ -68,7 +66,7 @@ void varTable(int index, int deminsion, int *size)
     //printf("%d %s\n", temp->index, G_Var[temp->index].mark);
 }
 
-/*为变量说明类型*/
+
 void addType(int type){
     Var* pVar = varHead->next;
     int i;
@@ -80,7 +78,7 @@ void addType(int type){
     listNum = 0;
 }
 
-/*为变量说明层数*/
+
 void addLevel(int level){
     Var* pVar = varHead->next;
     int i;
@@ -91,47 +89,47 @@ void addLevel(int level){
     decNum = 0;
 }
 
-/*查找变量是否已经定义,是返回1，否返回0*/
+
 Var* varFind(int index)
 {
 	Var* pVar = varHead->next;
 
     while(pVar != NULL){
         if(!strcmp(G_Var[pVar->nameIndex].mark, G_Var[index].mark)){
-            return pVar;    //存在返回1
+            return pVar;    //return 1 while existing
         }
         pVar = pVar->next;
     }
-    return NULL;            //不存在返回0
+    return NULL;            
 }
 
-/*查找变量类型*/
+
 int varType(int index)
 {
 	Var* pVar = (Var *)malloc(sizeof(Var));
     pVar = varHead->next;
     while(pVar != NULL){
         if(!strcmp(G_Var[pVar->nameIndex].mark, G_Var[index].mark))
-            return pVar->type;//返回变量类型
+            return pVar->type;
         pVar = pVar->next;
     }
     return -1;
 }
 
-/*查找变量大小*/
+
 int varDeminsion(int index)
 {
     Var* pVar = (Var *)malloc(sizeof(Var));
     pVar = varHead->next;
     while(pVar != NULL){
         if(!strcmp(G_Var[pVar->nameIndex].mark, G_Var[index].mark))
-            return pVar->deminsion;//返回变量类型
+            return pVar->deminsion;
         pVar = pVar->next;
     }
     return -1;
 }
 
-/*查找变量层数*/
+
 int sameLevel(int index)
 {
     Var* pVar = varHead->next;
@@ -143,47 +141,46 @@ int sameLevel(int index)
     return 0;
 }
 
-/*=================创建、查询函数符号表==============*/
-/*建立函数符号表,函数声明*/
+/*=================Function symbol table==============*/
 void funcDeclare(int type, int index, int line)
 {
 
     Func *pFunc = (Func *)malloc(sizeof(Func));
 
-    pFunc->tag = 1;      //标志为申明
+    pFunc->tag = 1;    
     pFunc->type = type;
     pFunc->nameIndex = index;
     pFunc->line = line;
     pFunc->pnum = pNum;
-    pNum = 0;   //将实参个数清0
+    pNum = 0;          //Clear the number of arguments
 
-    funcTail->next = pFunc;  //尾指针指向下一个空结点
+    funcTail->next = pFunc; 
     funcTail = pFunc;
     pFunc->next = NULL;
 }
 
-/*建立函数符号表,函数定义*/
+
 void funcDefine(int type, int index, int line)
 {
     Func *pFunc = (Func *)malloc(sizeof(Func));
 
-    pFunc->tag = 2;      //标志为定义
+    pFunc->tag = 2;     
     pFunc->type = type;
     pFunc->nameIndex = index;
     pFunc->line = line;
     pFunc->pnum = pNum;
-    pNum = 0;   //将实参个数清0
-    if(pFunc->type!=0 && rtype!=0 && rtype != pFunc->type){ //实际返回类型和函数定义的返回类型比较{
+    pNum = 0;          //Clear the number of arguments
+    if(pFunc->type!=0 && rtype!=0 && rtype != pFunc->type){ 
         error = true;
         printf("Semantic Error at Line %d: Type mismatched for return.\n", yylineno);
     }
 
-    funcTail->next = pFunc;  //尾指针指向下一个空结点
+    funcTail->next = pFunc;  
     funcTail = pFunc;
     pFunc->next = NULL;
 }
 
-/*查找函数是否已经定义,是返回1，否返回0*/
+
 Func* funcFind(int index)
 {
 	int flag=0;
@@ -191,13 +188,13 @@ Func* funcFind(int index)
 
     while(pFun!=NULL){
         if(!strcmp(G_Var[pFun->nameIndex].mark, G_Var[index].mark))
-            return pFun;    //存在返回1
+            return pFun;    //return 1 while existing
         pFun = pFun->next;
     }
-    return NULL;        //不存在返回0
+    return NULL;       
 }
 
-/*查找是否存在只声明没有定义的函数*/
+/* Find whether there is a function that's only declaration no definition*/
 void undefFunc()
 {
     Func* pFun = funcHead->next;
@@ -210,43 +207,42 @@ void undefFunc()
     }
 }
 
-/*查找函数类型*/
+
 int funcType(int index)
 {
 	Func* pFun = funcHead->next;
     while(pFun != NULL){
         if(!strcmp(G_Var[pFun->nameIndex].mark, G_Var[index].mark))
-            return pFun->type;//返回函数类型
+            return pFun->type;
         pFun = pFun->next;
     }
     return -1;
 }
 
-/*查找函数的形参个数*/
+
 int paraNum(int index)
 {	
 	Func* pFun = funcHead->next;
     while(pFun != NULL){
         if(!strcmp(G_Var[pFun->nameIndex].mark, G_Var[index].mark))
-            return pFun->pnum;//返回形参个数
+            return pFun->pnum;
         pFun = pFun->next;
     }
     return -1;
 }
 
-/*=================结构体符号表==============*/
-/*建立结构体符号表*/
+/*==================Struct symbol table==============*/
 void strucTable(int num,...)
 {   
-    va_list valist; //定义变长参数列表
-    Struc *pStruc = (Struc *)malloc(sizeof(Struc));//memNum新生成的父节点
+    va_list valist; 
+    Struc *pStruc = (Struc *)malloc(sizeof(Struc));/
     Node *temp = (Node *)malloc(sizeof(Node));
 
     pStruc->memNum = memNum;
     memNum = 0;
 
-    va_start(valist, num);           //初始化变长参数为num后的参数
-    temp = va_arg(valist, Node*);    //取变长参数列表中的第二个结点
+    va_start(valist, num);           // Initialize parameters which number is num
+    temp = va_arg(valist, Node*);    // Take the second node in the variable length parameter list
     pStruc->nameIndex = temp->index;
 
     strucTail->next = pStruc;
@@ -255,20 +251,19 @@ void strucTable(int num,...)
 }
 
 
-/*查找结构是否已经定义,是返回1，否返回0*/
 Struc* strucFind(int index)
 {
     Struc* pStruc = strucHead->next;
 
     while(pStruc != NULL){
         if(!strcmp(G_Var[pStruc->nameIndex].mark, G_Var[index].mark))
-            return pStruc;     //存在返回1
+            return pStruc;
         pStruc = pStruc->next;
     }
-    return NULL;//不存在返回0
+    return NULL;
 }
 
-/*查找结构成员*/
+
 int strucMem(int type, int index){
     int i;
 
@@ -279,15 +274,15 @@ int strucMem(int type, int index){
             for(i = 1; i <= pStruc->memNum; i++){
                // printf("%s %s\n\n\n\n", G_Var[pStruc->nameIndex + i].mark, G_Var[index].mark);
                 if(!strcmp(G_Var[pStruc->nameIndex + i].mark, G_Var[index].mark))
-                    return 1;     //存在返回1
+                    return 1;     
             }
         }
         pStruc = pStruc->next;
     }
-    return 0;//不存在返回0
+    return 0;
 }
 
-/*结构匹配*/
+
 int strucMatch(int type1, int type2)
 {
     int i = 0, num = 0;
@@ -301,7 +296,7 @@ int strucMatch(int type1, int type2)
                 for(i = 1; i <= num; i++){
                     //printf("%d %s %s %d %d\n\n\n\n", num, G_Var[pStruc1->nameIndex + i].mark, G_Var[pStruc2->nameIndex + i].mark, varType(pStruc1->nameIndex + i), varType(pStruc2->nameIndex + i));
                     if(varType(pStruc1->nameIndex + i) != varType(pStruc2->nameIndex + i))
-                        return 0;     //不匹配返回0
+                        return 0;    
                 }
                 if(i > num)
                     return 1;
@@ -311,7 +306,7 @@ int strucMatch(int type1, int type2)
     return 0;
 }
 
-//得到结构体的大小；得到一个域(一定在该结构体中存在)在结构体内从头部开始的偏移量。
+/* Get the size of the structure */
 int structSize(Struc* pStruc)
 {
     int count = 0;
@@ -327,6 +322,7 @@ int structSize(Struc* pStruc)
     return count;
 }
 
+/* Get the offset of a domain (which must be present in the structure) from the head within the structure. */
 int structOffset(Struc* pStruc, int index){
     int count = 0;
     for(int i = 1; i <= pStruc->memNum; i++){

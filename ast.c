@@ -1,19 +1,20 @@
 #include "ast.h"
 
-int G_iVarMaxIndex = 0;  /* 变量最大个数 */
-int G_iVarCurIndex = -1; /* 变量当前索引 */
+int G_iVarMaxIndex = 0;  /* Maximum number of Varblies */
+int G_iVarCurIndex = -1; /* Current index of the Variable */
+
 
 Node *set_int(int value) {
     Node *p;
     size_t sizeNode;
-    /* 分配结点空间 */
+    /* Allocate the space for tree node */
     sizeNode = sizeof(Node);
  
     if((p = (Node *)malloc(sizeNode)) == NULL){
         yyerror("out of memory");  
         return NULL;
     }
-    /* 复制内容 */
+    
     p->kind = TYPE_CONST;
     p->type = TYPE_NUM;
     p->numI = value;
@@ -21,17 +22,17 @@ Node *set_int(int value) {
     return p;
 }
 
+
 Node *set_float(float value){
     Node *p;
     size_t sizeNode;
-    /* 分配结点空间 */
+    /* Allocate the space for tree node */
     sizeNode = sizeof(Node);
  
     if((p = (Node *)malloc(sizeNode)) == NULL){
         yyerror("out of memory");  
         return NULL;
     }
-    /* 复制内容 */
     p->kind = TYPE_CONST;
     p->type = TYPE_FLOAT;
     p->numF = value;
@@ -39,50 +40,54 @@ Node *set_float(float value){
     return p;
 }
 
+
 Node *set_var(int value) {
     Node *p;
     size_t sizeNode;
-    /* 分配结点空间 */
+    /* Allocate the space for tree node */
     sizeNode = sizeof(Node);
  
     if((p = (Node *)malloc(sizeNode)) == NULL){
         yyerror("out of memory");
         return NULL;
     }
-    /* 复制内容 */
     p->kind = TYPE_VAR;
     p->index = value;
     return p;
 }
 
+
+/* Generate a terminal node */
 Node *set_terminal(int value){
     Node *p;
     size_t sizeNode;
-    /* 分配结点空间 */
+    /* Allocate the space for tree node */
     sizeNode = sizeof(Node);
  
     if((p = (Node *)malloc(sizeNode)) == NULL){
         yyerror("out of memory");
         return NULL;
     }
-    /* 复制内容 */
+
     p->kind = TYPE_TERMINAL;
     p->index = value;
     return p;
 }
 
+
+/* Generate a non-terminal node */
 Node *set_vn(char* name, int num, ...) {
     va_list valist;
     Node *p;
     size_t sizeNode;
     int i;
-    /* 分配结点空间 */
+    /* Allocate the space for tree node */
     sizeNode = sizeof(Node);
     if((p = (Node *)malloc(sizeNode)) == NULL){
         yyerror("out of memory");
         return NULL;
     }
-    /* 复制内容 */
+
     p->kind = TYPE_UNTREMINAL;
     strcpy(p->vn.name, name);
     p->vn.num = num;
@@ -104,12 +109,15 @@ Node *set_vn(char* name, int num, ...) {
     return p;
 }
 
+
 void add_var(char *mark){   
     strcpy(G_Var[G_iVarMaxIndex].mark, mark); 
     G_iVarCurIndex = G_iVarMaxIndex;
     G_iVarMaxIndex++;
 }
 
+
+/* Free the space */
 void NodeFree(Node *p){
     int i;
     if(!p) 
@@ -125,6 +133,7 @@ void NodeFree(Node *p){
     p = NULL;
 }
 
+
 void tabprint(FILE* target_file, int num){
     int i = 0;
     for(i=0; i<num; i++){
@@ -133,6 +142,7 @@ void tabprint(FILE* target_file, int num){
 }
 
 
+/* Write the syntax tree to file */
 int NodeExecute(FILE* target_file, Node *p, int num){
     int i = 0;
     

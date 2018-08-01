@@ -8,8 +8,8 @@
 	#include "semantic.h"
 	#include "yacc.tab.h"
 
-	struct VarDefine G_Def[MAX_DEFS];            //存储的变量数组
-	extern void add_var(char *);  //在内存中添加变量
+	struct VarDefine G_Def[MAX_DEFS];            // Variable Array
+	extern void add_var(char *); 
 
 	#define ERRORCHAR  500
 	#define ERRORINT8  500

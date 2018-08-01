@@ -83,7 +83,7 @@ void finCode(FILE *target_file, InterCodes* pCode)
 	}while(p != NULL);
 }
 
-//将对应的中间代码转换为相关指令
+/* Convert the intermediate codes to final instructions */
 void instructions(FILE *target_file, InterCodes* pHead, InterCodes* pTail)
 {
 	fprintf(target_file, "%s:\n", pHead->args[3]);
