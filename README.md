@@ -5,11 +5,8 @@ It is a simple compiler for C--, a subset of C, including lexical analysis, synt
 The generated object code is MIPS32 Instructments, which can run on any MIPS simulators, such as *QtSPIM*.
 
 * The errors which the compiler can analyze:
-<img src="images/errors.png" style="zoom:50%" />
-
-* The code tranaformation progress:
-<img src="images/codes.png" style="zoom:50%" />
-
+![errors](images/errors.png=100x100)
+![errors](images/codes.png=100x100)
 
 ### Implementation Stage
 
@@ -40,10 +37,10 @@ Modular -- the source language can be separated from the target language.
 * Result: test.asm
 
 ### Environment
-* Flex  GNU Flex version 2.5.4 
-* Bison  GNU Bison version 2.4.1
-* Compiler GCC version 4.9.2 
-* Simulator QtSPIM version 9.1.9
+| Flex      | GNU Flex version 2.5.4 | 
+| Bison     | GNU Bison version 2.4.1 |
+| Compiler  | GCC version 4.9.2 |
+| Simulator | QtSPIM version 9.1.9 |
 
 ### Run
 ```
